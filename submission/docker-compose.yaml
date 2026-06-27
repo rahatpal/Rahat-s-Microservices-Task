@@ -1,0 +1,40 @@
+services:
+  user-service:
+    build: ./user-service
+    ports:
+      - "3000:3000"
+    networks:
+      - microservice-network
+    restart: unless-stopped
+
+  product-service:
+    build: ./product-service
+    ports:
+      - "3001:3001"
+    networks:
+      - microservice-network
+    restart: unless-stopped
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "3002:3002"
+    networks:
+      - microservice-network
+    restart: unless-stopped
+
+  gateway-service:
+    build: ./gateway-service
+    ports:
+      - "3003:3003"
+    networks:
+      - microservice-network
+    depends_on:
+      - user-service
+      - product-service
+      - order-service
+    restart: unless-stopped
+
+networks:
+  microservice-network:
+    driver: bridge
